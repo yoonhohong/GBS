@@ -14,7 +14,7 @@ input_file = "BRM_00067159_JOS_F_60_2010-03-12.csv"
 raw_ncs = read.csv(input_file)
 
 # need the reference values. 
-ref = read.csv("reference_ncs.csv")
+ref = read.csv("/Users/yoonhohong/Desktop/GBS_data/Reference/reference_ncs.csv")
 
 # need the formula to calculate height-adjusted F-wave latency values. 
 # median
