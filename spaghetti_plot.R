@@ -16,14 +16,14 @@ df$side.nerve = paste(df$side, df$nerve, sep = ".")
 # group by side.nerve
 # plot time series; CMAP1, DML, DUR1, CMAP2, DUR2, NCV1
 
-filter(df, param == "CMAP1") -> CMAP1
+filter(df, param == "DUR1") -> DUR1
 
 ########################################
 nerve.list = unique(df$side.nerve)
 
 ls = list()
 for (i in 1:length(nerve.list)){
-  filter(CMAP1, side.nerve == nerve.list[i]) -> temp1
+  filter(DUR1, side.nerve == nerve.list[i]) -> temp1
   select(temp1, id, date, side.nerve, value) -> temp2
   split(temp2, temp2$id) -> temp3
   for (j in 1:length(temp3)){
@@ -36,19 +36,19 @@ for (i in 1:length(nerve.list)){
   ls[[i]] = bind_rows(temp3)
 }
 
-CMAP1 = bind_rows(ls)
+DUR1 = bind_rows(ls)
 
 ###########
 
-df.CMAP1 = separate(CMAP1, side.nerve, c("side", "nerve"))
-df.CMAP1$gr = paste(df.CMAP1$id, df.CMAP1$side, df.CMAP1$nerve, sep=".")
+df.DUR1 = separate(DUR1, side.nerve, c("side", "nerve"))
+df.DUR1$gr = paste(df.DUR1$id, df.DUR1$side, df.DUR1$nerve, sep=".")
   
-ggplot(df.CMAP1, aes(day, value, col=factor(nerve), group=factor(gr))) + 
+ggplot(df.DUR1, aes(day, value, col=factor(nerve), group=factor(gr))) + 
   geom_point() + 
   geom_line() + 
-  scale_x_continuous(limits = c(0,30)) + 
+  scale_x_continuous(limits = c(0,30)) + scale_y_continuous(limits = c(0, 400)) + 
   facet_grid(~factor(nerve)) +
-  labs(color="Nerve", title="CMAP1", y="Values relative to ULN/LLN (%)", x="Days from 1st EDX study")
+  labs(color="Nerve", title="DUR1", y="Values relative to ULN/LLN (%)", x="Days from 1st EDX study")
 # 
 # need at least two data points, exclude single dots...
 # need two data points for which cmap amplitudes increased...
